@@ -1,4 +1,5 @@
-imaginary-rpg
-=============
+Imaginary website
+=================
 
-The code and resources for the Imaginary RPG game.
+I'm not happy that this has to be on a different branch, and not a
+separate repo.
