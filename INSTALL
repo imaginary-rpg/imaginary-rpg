@@ -1,0 +1,6 @@
+The basic instructions for building the engine on a UNIX system are
+
+  $ cd build/
+  $ cmake ..
+  $ make
+  $ ./src/imaginary
