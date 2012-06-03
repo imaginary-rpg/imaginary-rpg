@@ -34,7 +34,7 @@ imaginary::Image::Image (std::string fileName)
   if (temp == 0)
     throw std::runtime_error ("Could not open file");
  
-  surface = SDL_DisplayFormat (temp);
+  surface = SDL_DisplayFormatAlpha (temp);
   SDL_FreeSurface (temp);
 }
 
