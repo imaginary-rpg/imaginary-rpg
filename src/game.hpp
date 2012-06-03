@@ -15,17 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-#include "game.hpp"
+#ifndef IMAGINARY_GAME_HPP
+#define IMAGINARY_GAME_HPP
 
-#include <iostream>
+struct SDL_Surface;
 
-int
-main (int argc, char **argv)
+namespace imaginary
 {
-  imaginary::Game game;
 
-  std::cout << "Hello, world!\n";
+class Game
+{
+  public:
+    Game ();
+    ~Game ();
 
-  return game.Run();
+    int Run ();
+
+  private:
+    SDL_Surface* displaySurface;
+};
+
 }
+
+#endif // #ifndef IMAGINARY_GAME_HPP
