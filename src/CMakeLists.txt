@@ -18,7 +18,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
                 ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
 set (imaginary_INCLUDE ${CMAKE_CURRENT_BINARY_DIR})
-set (imaginary_SRCS    main.cpp game.cpp)
+file (GLOB imaginary_SRCS "*.cpp")
 
 find_package (SDL       REQUIRED)
 find_package (SDL_image REQUIRED)
