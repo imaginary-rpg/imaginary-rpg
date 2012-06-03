@@ -18,14 +18,10 @@
 #include "config.h"
 #include "game.hpp"
 
-#include <iostream>
-
 int
 main (int argc, char **argv)
 {
   imaginary::Game game;
-
-  std::cout << "Hello, world!\n";
 
   return game.Run();
 }

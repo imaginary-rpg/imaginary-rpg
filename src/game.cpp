@@ -24,7 +24,8 @@
 #include <SDL.h>
 
 imaginary::Game::Game ()
-  : displaySurface (0)
+  : displaySurface (0),
+    isRunning (false)
 {
   std::cout << "Initializing Imaginary...\n";
 
@@ -32,6 +33,7 @@ imaginary::Game::Game ()
     {
       throw std::runtime_error ("Could not initialize SDL.");
     }
+  std::cout << "  >> Initialized SDL\n";
  
   displaySurface = SDL_SetVideoMode (640, 480, 32,
                                      SDL_HWSURFACE | SDL_DOUBLEBUF);
@@ -40,18 +42,53 @@ imaginary::Game::Game ()
       throw std::runtime_error ("Could not create a window.  "
                                 "Is your graphics card supported?");
     }
+  std::cout << "  >> Created window\n";
 }
 
 imaginary::Game::~Game ()
 {
   std::cout << "Closing Imaginary...\n";
   SDL_Quit ();
+  std::cout << "  >> Shutdown SDL\n";
 }
 
 int
 imaginary::Game::Run ()
 {
-  // Temporary hack.
-  std::cin.get ();
+  isRunning = true;
+  std::cout << "Starting game...\n";
+  std::cout << " >> To quit, close the window\n";
+
+  while (isRunning)
+    {
+      SDL_Event event;
+      while (SDL_PollEvent (&event))
+        {
+          HandleEvent (&event);
+        }
+ 
+      Update ();
+      Render ();
+    }
+
   return 0;
+}
+
+void
+imaginary::Game::HandleEvent (SDL_Event *event)
+{
+  if (event->type == SDL_QUIT)
+    {
+      isRunning = false;
+    }
+}
+
+void
+imaginary::Game::Update ()
+{
+}
+
+void
+imaginary::Game::Render ()
+{
 }

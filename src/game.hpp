@@ -19,6 +19,7 @@
 #define IMAGINARY_GAME_HPP
 
 struct SDL_Surface;
+union SDL_Event;
 
 namespace imaginary
 {
@@ -32,7 +33,12 @@ class Game
     int Run ();
 
   private:
+    void HandleEvent (SDL_Event *event);
+    void Update ();
+    void Render ();
+
     SDL_Surface* displaySurface;
+    bool isRunning;
 };
 
 }
