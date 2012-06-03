@@ -54,6 +54,7 @@ imaginary::Game::Game ()
 imaginary::Game::~Game ()
 {
   std::cout << "Closing Imaginary...\n";
+  delete display;
   SDL_Quit ();
   std::cout << "  >> Shutdown SDL\n";
 }
