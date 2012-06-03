@@ -37,6 +37,7 @@ imaginary::Game::Game ()
  
   displaySurface = SDL_SetVideoMode (640, 480, 32,
     SDL_HWSURFACE | SDL_DOUBLEBUF);
+  SDL_WM_SetCaption ("Imaginary", "Imaginary");
   if (!displaySurface)
     {
       throw std::runtime_error ("Could not create a window.  "
