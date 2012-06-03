@@ -15,36 +15,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGINARY_GAME_HPP
-#define IMAGINARY_GAME_HPP
+#include "config.h"
+#include "display.hpp"
+#include "geometry.hpp"
 
-struct SDL_Surface;
-union SDL_Event;
+#include <SDL.h>
 
-namespace imaginary
+imaginary::Display::Display (SDL_Surface* buffer, imaginary::Rectangle viewPort)
+  : surface (buffer), viewPort (viewPort)
+{}
+
+imaginary::Display::~Display ()
 {
-
-class Display;
-
-class Game
-{
-    static const unsigned WINDOW_WIDTH  = 640;
-    static const unsigned WINDOW_HEIGHT = 480;
-  public:
-    Game ();
-    ~Game ();
-
-    int Run ();
-
-  private:
-    void HandleEvent (SDL_Event *event);
-    void Update ();
-    void Render ();
-
-    Display* display;
-    bool isRunning;
-};
-
+  SDL_FreeSurface (surface);
 }
 
-#endif // #ifndef IMAGINARY_GAME_HPP
+imaginary::Rectangle
+imaginary::Display::GetViewPort ()
+  const
+{
+  return viewPort;
+}
+
+void
+imaginary::Display::MoveViewPoint (imaginary::Point newLocation)
+{
+  int width  = viewPort.bottomRight.x - viewPort.topLeft.x;
+  int height = viewPort.bottomRight.y - viewPort.topLeft.y;
+
+  viewPort.topLeft = viewPort.bottomRight = newLocation;
+  viewPort.bottomRight.x += width;
+  viewPort.bottomRight.y += height;
+}
+
+SDL_Surface*
+imaginary::Display::GetSurface ()
+  const
+{
+  return surface;
+}

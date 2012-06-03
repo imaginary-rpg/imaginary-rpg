@@ -15,36 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGINARY_GAME_HPP
-#define IMAGINARY_GAME_HPP
+#ifndef IMAGINARY_DISPLAY_HPP
+#define IMAGINARY_DISPLAY_HPP
+
+#include "geometry.hpp"
 
 struct SDL_Surface;
-union SDL_Event;
 
 namespace imaginary
 {
 
-class Display;
+struct Rectangle;
+struct Point;
 
-class Game
+class Display
 {
-    static const unsigned WINDOW_WIDTH  = 640;
-    static const unsigned WINDOW_HEIGHT = 480;
   public:
-    Game ();
-    ~Game ();
+    Display (SDL_Surface* buffer, Rectangle viewPort);
+    ~Display ();
 
-    int Run ();
+    Rectangle GetViewPort () const;
+    void MoveViewPoint (Point newLocation);
+
+    SDL_Surface* GetSurface () const;
 
   private:
-    void HandleEvent (SDL_Event *event);
-    void Update ();
-    void Render ();
-
-    Display* display;
-    bool isRunning;
+    SDL_Surface* surface;
+    Rectangle    viewPort;
 };
 
 }
 
-#endif // #ifndef IMAGINARY_GAME_HPP
+#endif // #ifndef IMAGINARY_DISPLAY_HPP

@@ -17,6 +17,8 @@
 
 #include "config.h"
 #include "game.hpp"
+#include "geometry.hpp"
+#include "display.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -24,7 +26,7 @@
 #include <SDL.h>
 
 imaginary::Game::Game ()
-  : displaySurface (0),
+  : display (0),
     isRunning (false)
 {
   std::cout << "Initializing Imaginary...\n";
@@ -35,14 +37,16 @@ imaginary::Game::Game ()
     }
   std::cout << "  >> Initialized SDL\n";
  
-  displaySurface = SDL_SetVideoMode (640, 480, 32,
-    SDL_HWSURFACE | SDL_DOUBLEBUF);
+  SDL_Surface* displaySurface = SDL_SetVideoMode (WINDOW_WIDTH, WINDOW_HEIGHT,
+    32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   SDL_WM_SetCaption ("Imaginary", "Imaginary");
   if (!displaySurface)
     {
       throw std::runtime_error ("Could not create a window.  "
                                 "Is your graphics card supported?");
     }
+  display = new imaginary::Display (displaySurface,
+    imaginary::Rectangle (0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
   std::cout << "  >> Created window\n";
 }
 
@@ -99,4 +103,5 @@ imaginary::Game::Update ()
 void
 imaginary::Game::Render ()
 {
+  SDL_Flip (display->GetSurface ());
 }
