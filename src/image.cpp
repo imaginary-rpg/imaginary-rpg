@@ -36,6 +36,9 @@ imaginary::Image::Image (std::string fileName)
  
   surface = SDL_DisplayFormatAlpha (temp);
   SDL_FreeSurface (temp);
+
+  width = surface->w;
+  height = surface->h;
 }
 
 imaginary::Image::~Image ()
