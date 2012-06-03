@@ -38,7 +38,7 @@ imaginary::Display::GetViewPort ()
 }
 
 void
-imaginary::Display::MoveViewPoint (imaginary::Point newLocation)
+imaginary::Display::MoveViewPort (imaginary::Point newLocation)
 {
   int width  = viewPort.bottomRight.x - viewPort.topLeft.x;
   int height = viewPort.bottomRight.y - viewPort.topLeft.y;

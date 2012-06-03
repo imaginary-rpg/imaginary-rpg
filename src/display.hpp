@@ -35,7 +35,7 @@ class Display
     ~Display ();
 
     Rectangle GetViewPort () const;
-    void MoveViewPoint (Point newLocation);
+    void MoveViewPort (Point newLocation);
 
     SDL_Surface* GetSurface () const;
 
