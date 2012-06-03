@@ -17,6 +17,7 @@
 
 #include "config.h"
 #include "game.hpp"
+#include "image.hpp"
 #include "geometry.hpp"
 #include "display.hpp"
 
@@ -64,6 +65,9 @@ imaginary::Game::Run ()
   std::cout << "Starting game...\n";
   std::cout << "  >> To quit, close the window or press enter\n";
 
+  // Hack, to test
+  imaginary::Image im ("../res/sprites/char/daedalus_walkcycle.png");
+
   while (isRunning)
     {
       SDL_Event event;
@@ -73,6 +77,9 @@ imaginary::Game::Run ()
         }
  
       Update ();
+      // Hack, to test
+      im.Blit (imaginary::Rectangle (10, 14, 42, 46), *display, imaginary::Point
+               (128, 128));
       Render ();
     }
 
