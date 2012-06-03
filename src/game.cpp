@@ -36,7 +36,7 @@ imaginary::Game::Game ()
   std::cout << "  >> Initialized SDL\n";
  
   displaySurface = SDL_SetVideoMode (640, 480, 32,
-                                     SDL_HWSURFACE | SDL_DOUBLEBUF);
+    SDL_HWSURFACE | SDL_DOUBLEBUF);
   if (!displaySurface)
     {
       throw std::runtime_error ("Could not create a window.  "
@@ -57,7 +57,7 @@ imaginary::Game::Run ()
 {
   isRunning = true;
   std::cout << "Starting game...\n";
-  std::cout << " >> To quit, close the window\n";
+  std::cout << "  >> To quit, close the window or press enter\n";
 
   while (isRunning)
     {
@@ -77,9 +77,16 @@ imaginary::Game::Run ()
 void
 imaginary::Game::HandleEvent (SDL_Event *event)
 {
-  if (event->type == SDL_QUIT)
+  switch (event->type)
     {
+    case SDL_QUIT:
       isRunning = false;
+      break;
+    case SDL_KEYUP:
+      if (event->key.keysym.sym == SDLK_RETURN)
+        {
+          isRunning = false;
+        }
     }
 }
 
