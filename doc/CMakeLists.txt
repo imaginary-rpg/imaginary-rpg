@@ -14,15 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-project (imaginary)
-cmake_minimum_required (VERSION 2.6)
+find_package (Doxygen)
+if (DOXYGEN_FOUND)
+  configure_file (${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
+                  ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
-
-#include (Defaults)
-#include (CompilerChecks)
-include (Version)
-#include (Uninstall)
-
-add_subdirectory (src)
-add_subdirectory (doc)
+  add_custom_target (doc
+                     ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                     COMMENT "Generating API documentation with Doxygen"
+                     VERBATIM)
+endif (DOXYGEN_FOUND)
