@@ -22,8 +22,13 @@ file (GLOB imaginary_SRCS "*.cpp")
 
 find_package (SDL       REQUIRED)
 find_package (SDL_image REQUIRED)
+find_package (SDL_mixer REQUIRED)
+#find_package (SDL_sound REQUIRED)
 
 include_directories (${imaginary_INCLUDE}
-                     ${SDL_INCLUDE_DIR} ${SDLIMAGE_INCLUDE_DIR})
+                     ${SDL_INCLUDE_DIR} ${SDLIMAGE_INCLUDE_DIR}
+                     ${SDLMIXER_INCLUDE_DIR})
 add_executable (imaginary ${imaginary_SRCS})
-target_link_libraries (imaginary ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} SDLmain)
+target_link_libraries (imaginary
+                       ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} ${SDLMIXER_LIBRARY}
+                       SDLmain)

@@ -19,11 +19,13 @@
 #include "game.hpp"
 #include "image.hpp"
 #include "display.hpp"
+#include "sound.hpp"
 
 #include <iostream>
 #include <stdexcept>
 
 #include <SDL.h>
+#include <SDL_mixer.h>
 
 
 imaginary::Sdl::Sdl ()
@@ -32,11 +34,18 @@ imaginary::Sdl::Sdl ()
     {
       throw std::runtime_error ("Could not initialize SDL.");
     }
+  
+  if (Mix_OpenAudio (22050, AUDIO_S16SYS, 2, 4096) != 0)
+    {
+      throw std::runtime_error ("Could not initialize SDL mixer.");
+    }
+
   std::cout << "Initialized SDL\n";
 }
 
 imaginary::Sdl::~Sdl ()
 {
+  Mix_CloseAudio ();
   SDL_Quit ();
 }
 
@@ -61,6 +70,8 @@ imaginary::Game::Run ()
 
   // Hack, to test
   imaginary::Image im ("../res/sprites/char/daedalus_walkcycle.png");
+  imaginary::Sound sn ("../res/audio/music/code_monkey.ogg");
+  sn.Play (-1);
 
   while (isRunning)
     {
