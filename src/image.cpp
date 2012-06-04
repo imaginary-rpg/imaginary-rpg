@@ -90,18 +90,18 @@ imaginary::Image::Blit (imaginary::Rectangle part,
   source.w = part.bottomRight.x - part.topLeft.x;
   source.h = part.bottomRight.y - part.topLeft.y;
 
-  if (location.x > d.GetViewPort ().bottomRight.x        ||
-      location.y > d.GetViewPort ().bottomRight.y        ||
-      location.x + source.w < d.GetViewPort ().topLeft.x ||
-      location.y + source.h < d.GetViewPort ().topLeft.y)
+  if (location.x > d.GetViewPort ().x + d.GetViewPort ().w ||
+      location.y > d.GetViewPort ().y + d.GetViewPort ().h ||
+      location.x + source.w < d.GetViewPort ().x           ||
+      location.y + source.h < d.GetViewPort ().y)
     {
       // Outside the screen, don't blit.
       return;
     }
 
   SDL_Rect destination;
-  destination.x = location.x - d.GetViewPort ().topLeft.x;
-  destination.y = location.y - d.GetViewPort ().topLeft.y;
+  destination.x = location.x - d.GetViewPort ().x;
+  destination.y = location.y - d.GetViewPort ().y;
  
   SDL_BlitSurface (surface, &source, d.GetSurface (), &destination);
 }

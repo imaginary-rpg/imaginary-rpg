@@ -21,15 +21,14 @@
 #ifndef IMAGINARY_DISPLAY_HPP
 #define IMAGINARY_DISPLAY_HPP
 
-#include "geometry.hpp"
+#include <SDL.h>
+#include <string>
 
 struct SDL_Surface;
+struct SDL_Rect;
 
 namespace imaginary
 {
-
-struct Rectangle;
-struct Point;
 
 
 /**
@@ -42,11 +41,6 @@ struct Point;
  * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
  * @date    2012-06-03
  * @since   0.1
- *
- * @todo I think we'll want to open up the window in this class, not in
- * imaginary::Game.  It's important that we figure out how to get the SDL_Init()
- * function called before this object is made, though, and I don't like the
- * current solution of using the free store.
  *
  * @todo We need to make this surface available to anyone else to blit other
  * surfaces to the screen; we could use friends or pass the surfaces of other
@@ -65,11 +59,10 @@ class Display
      * @date   2012-06-03
      * @since  0.1
      *
-     * @param [in] buffer   The constructed display buffer that this Display
-     * will manage.
      * @param [in] viewPort The initial view port of this display in the level.
+     * @param [in] caption  The caption for the window.
      */
-    Display (SDL_Surface* buffer, Rectangle viewPort);
+    Display (SDL_Rect viewPort, std::string caption);
     /**
      * Destructs an existing Display object.  This frees the SDL surface.
      *
@@ -86,9 +79,9 @@ class Display
      * @date   2012-06-03
      * @since  0.1
      *
-     * @return A Rectangle corresponding to the view port in the current level.
+     * @return A rectangle corresponding to the view port in the current level.
      */
-    Rectangle GetViewPort () const;
+    SDL_Rect GetViewPort () const;
     /**
      * Moves the upper left corner of the current view port.  The width and
      * height are not affected, so this effectively pans the view port around
@@ -98,10 +91,12 @@ class Display
      * @date   2012-06-03
      * @since  0.1
      *
-     * @param [in] newLocation The coordinates of the new uper left corner of
-     * the view port with respect to the level.
+     * @param [in] x The new x-coordinate of the upper left corner of the view
+     * port, relative to the level.
+     * @param [in] y The new y-coordinate of the upper left corner of the view
+     * port, relative to the level.
      */
-    void MoveViewPort (Point newLocation);
+    void MoveViewPort (int x, int y);
     /**
      * Returns the surface of this Display.  Because of the way SDL works and
      * because of our design, this is current necessary.
@@ -116,7 +111,7 @@ class Display
 
   private:
     SDL_Surface* surface;  ///< This window's backbuffer surface.
-    Rectangle    viewPort; ///< The view port with respect to the current level.
+    SDL_Rect     viewPort; ///< The view port with respect to the current level.
 };
 
 

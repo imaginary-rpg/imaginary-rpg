@@ -17,20 +17,32 @@
 
 #include "config.h"
 #include "display.hpp"
-#include "geometry.hpp"
 
 #include <SDL.h>
 
-imaginary::Display::Display (SDL_Surface* buffer, imaginary::Rectangle viewPort)
-  : surface (buffer), viewPort (viewPort)
-{}
+#include <string>
+#include <stdexcept>
+
+imaginary::Display::Display (SDL_Rect viewPort,
+                             std::string caption)
+  : surface (SDL_SetVideoMode (viewPort.w, viewPort.h, 32,
+                               SDL_HWSURFACE | SDL_DOUBLEBUF)),
+    viewPort (viewPort)
+{
+  if (!surface)
+    {
+      throw std::runtime_error ("Could not create a window.  "
+                                "Is your graphics card supported?");
+    }
+  SDL_WM_SetCaption (caption.c_str (), caption.c_str ());
+}
 
 imaginary::Display::~Display ()
 {
   SDL_FreeSurface (surface);
 }
 
-imaginary::Rectangle
+SDL_Rect
 imaginary::Display::GetViewPort ()
   const
 {
@@ -38,14 +50,11 @@ imaginary::Display::GetViewPort ()
 }
 
 void
-imaginary::Display::MoveViewPort (imaginary::Point newLocation)
+imaginary::Display::MoveViewPort (int x, int y)
 {
-  int width  = viewPort.bottomRight.x - viewPort.topLeft.x;
-  int height = viewPort.bottomRight.y - viewPort.topLeft.y;
 
-  viewPort.topLeft = viewPort.bottomRight = newLocation;
-  viewPort.bottomRight.x += width;
-  viewPort.bottomRight.y += height;
+  viewPort.x = x;
+  viewPort.y = y;
 }
 
 SDL_Surface*

@@ -37,17 +37,9 @@ imaginary::Game::Game ()
       throw std::runtime_error ("Could not initialize SDL.");
     }
   std::cout << "  >> Initialized SDL\n";
- 
-  SDL_Surface* displaySurface = SDL_SetVideoMode (WINDOW_WIDTH, WINDOW_HEIGHT,
-    32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-  SDL_WM_SetCaption ("Imaginary", "Imaginary");
-  if (!displaySurface)
-    {
-      throw std::runtime_error ("Could not create a window.  "
-                                "Is your graphics card supported?");
-    }
-  display = new imaginary::Display (displaySurface,
-    imaginary::Rectangle (0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+
+  SDL_Rect viewPort = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+  display = new imaginary::Display (viewPort, "Imaginary");
   std::cout << "  >> Created window\n";
 }
 
