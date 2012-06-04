@@ -24,12 +24,11 @@
 #include <string>
 
 struct SDL_Surface;
+struct SDL_Rect;
 
 namespace imaginary
 {
 
-struct Point;
-struct Rectangle;
 class Display;
 
 
@@ -102,14 +101,17 @@ class Image
      * @date   2012-06-03
      * @since  0.1
      *
-     * @param [in] part     The part of this Image to blit.
-     * @param [in] d        The Display whose view port to check.
-     * @param [in] location The location in the level to draw this Image.
+     * @param [in] part The part of this Image to blit.
+     * @param [in] d    The Display whose view port to check.
+     * @param [in] x    The x-coordinate of the location in the level to which
+     * to blit this Image.
+     * @param [in] y    The y-coordinate of the location in the level to which
+     * to blit this Image.
      *
      * @warning You probably don't want to call this method.  Consider using the
      * wrappers Animation and/or Frame.
      */
-    void Blit (Rectangle part, Display& d, Point location);
+    void Blit (SDL_Rect part, Display& d, int x, int y);
     /**
      * Bitblits a part of this Image to a specific location in another Image.
      *
@@ -117,19 +119,20 @@ class Image
      * @date   2012-06-03
      * @since  0.1
      *
-     * @param [in] part     The part of this Image to blit.
-     * @param [in] img      The Image into which to copy this Image.
-     * @param [in] location The location in the level to draw this Image.
+     * @param [in] part The part of this Image to blit.
+     * @param [in] img  The Image into which to copy this Image.
+     * @param [in] x    The x-coordinate of the location in the Image to which
+     * to blit this Image.
+     * @param [in] y    The y-coordinate of the location in the Image to which
+     * to blit this Image.
      *
      * @warning You probably don't want to call this method.  Consider using the
      * wrappers Animation and/or Frame.
      */
-    void Blit (Rectangle part, Image& img, Point location);
+    void Blit (SDL_Rect part, Image& img, int x, int y);
 
   private:
     SDL_Surface* surface; ///< The actual buffer containing the bitmap.
-    unsigned width;       ///< The width of the bitmap.
-    unsigned height;      ///< The height of the bitmap.
 };
 
 }

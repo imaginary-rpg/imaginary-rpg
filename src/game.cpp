@@ -18,7 +18,6 @@
 #include "config.h"
 #include "game.hpp"
 #include "image.hpp"
-#include "geometry.hpp"
 #include "display.hpp"
 
 #include <iostream>
@@ -74,8 +73,8 @@ imaginary::Game::Run ()
       SDL_FillRect (display->GetSurface (), 0,
                     SDL_MapRGB (display->GetSurface ()->format, 0, 0, 0));
       // Hack, to test
-      im.Blit (imaginary::Rectangle (10, 14, 42, 46), *display, imaginary::Point
-               (128, 128));
+      SDL_Rect source = { 10, 14, 42, 46 };
+      im.Blit (source, *display, 128, 128);
       Render ();
     }
 

@@ -17,7 +17,6 @@
 
 #include "config.h"
 #include "image.hpp"
-#include "geometry.hpp"
 #include "display.hpp"
 
 #include "SDL_image.h"
@@ -26,7 +25,7 @@
 #include <stdexcept>
 
 imaginary::Image::Image (std::string fileName)
-  : surface (0), width (0), height (0)
+  : surface (0)
 {
   SDL_Surface* temp = 0;
  
@@ -36,9 +35,6 @@ imaginary::Image::Image (std::string fileName)
  
   surface = SDL_DisplayFormatAlpha (temp);
   SDL_FreeSurface (temp);
-
-  width = surface->w;
-  height = surface->h;
 }
 
 imaginary::Image::~Image ()
@@ -50,58 +46,54 @@ unsigned
 imaginary::Image::GetWidth ()
   const
 {
-  return width;
+  return surface->w;
 }
 
 unsigned
 imaginary::Image::GetHeight ()
   const
 {
-  return height;
+  return surface->h;
 }
 
 
 void
-imaginary::Image::Blit (imaginary::Rectangle part,
-                        imaginary::Image&    img,
-                        imaginary::Point     location)
+imaginary::Image::Blit (SDL_Rect          part,
+                        imaginary::Image& img,
+                        int               x,
+                        int               y)
 {
-  SDL_Rect source;
-  source.x = part.topLeft.x;
-  source.y = part.topLeft.y;
-  source.w = part.bottomRight.x - part.topLeft.x;
-  source.h = part.bottomRight.y - part.topLeft.y;
-
   SDL_Rect destination;
-  destination.x = location.x;
-  destination.y = location.y;
+  destination.x = x;
+  destination.y = y;
+  destination.w = part.w;
+  destination.h = part.h;
  
-  SDL_BlitSurface (surface, &source, img.surface, &destination);
+  SDL_BlitSurface (surface, &part, img.surface, &destination);
 }
 
 void
-imaginary::Image::Blit (imaginary::Rectangle part,
-                        imaginary::Display&  d,
-                        imaginary::Point     location)
+imaginary::Image::Blit (SDL_Rect            part,
+                        imaginary::Display& d,
+                        int                 x,
+                        int                 y)
 {
-  SDL_Rect source;
-  source.x = part.topLeft.x;
-  source.y = part.topLeft.y;
-  source.w = part.bottomRight.x - part.topLeft.x;
-  source.h = part.bottomRight.y - part.topLeft.y;
+  SDL_Rect viewPort = d.GetViewPort ();
 
-  if (location.x > d.GetViewPort ().x + d.GetViewPort ().w ||
-      location.y > d.GetViewPort ().y + d.GetViewPort ().h ||
-      location.x + source.w < d.GetViewPort ().x           ||
-      location.y + source.h < d.GetViewPort ().y)
+  if (x > viewPort.x + viewPort.w ||
+      y > viewPort.y + viewPort.h ||
+      x + part.w < viewPort.x     ||
+      y + part.h < viewPort.y)
     {
       // Outside the screen, don't blit.
       return;
     }
 
   SDL_Rect destination;
-  destination.x = location.x - d.GetViewPort ().x;
-  destination.y = location.y - d.GetViewPort ().y;
+  destination.x = x - viewPort.x;
+  destination.y = y - viewPort.y;
+  destination.w = part.w;
+  destination.h = part.h;
  
-  SDL_BlitSurface (surface, &source, d.GetSurface (), &destination);
+  SDL_BlitSurface (surface, &part, d.GetSurface (), &destination);
 }
