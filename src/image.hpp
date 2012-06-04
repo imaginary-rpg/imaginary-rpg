@@ -43,8 +43,6 @@ class Display;
  *
  * @note This is likely at a lower level than what you need.  Consider using an
  * Animation or a Frame.
- *
- * @todo The width and height fields are probably unneccessary.  Remove them.
  */
 class Image
 {
