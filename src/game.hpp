@@ -35,7 +35,7 @@ namespace imaginary
  *
  * @version 0.1
  * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
- * @date    2012-06-03
+ * @date    2012-06-04
  * @since   0.1
  */
 class Sdl
@@ -45,7 +45,7 @@ class Sdl
      * Initializes SDL and related libraries (SDL_image, SDL_mixer, etc).
      *
      * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
-     * @date   2012-06-03
+     * @date   2012-06-04
      * @since  0.1
      */
     Sdl ();
@@ -53,7 +53,7 @@ class Sdl
      * Cleans up SDL and related libraries (SDL_image, SDL_mixer, etc).
      *
      * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
-     * @date   2012-06-03
+     * @date   2012-06-04
      * @since  0.1
      */
     ~Sdl ();
