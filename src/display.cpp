@@ -23,12 +23,17 @@
 #include <string>
 #include <stdexcept>
 
-imaginary::Display::Display (SDL_Rect viewPort,
+imaginary::Display::Display (unsigned width,
+                             unsigned height,
                              std::string caption)
-  : surface (SDL_SetVideoMode (viewPort.w, viewPort.h, 32,
-                               SDL_HWSURFACE | SDL_DOUBLEBUF)),
-    viewPort (viewPort)
+  : surface (SDL_SetVideoMode (width, height, 32,
+                               SDL_HWSURFACE | SDL_DOUBLEBUF))
 {
+  viewPort.x = 0;
+  viewPort.y = 0;
+  viewPort.w = width;
+  viewPort.h = height;
+
   if (!surface)
     {
       throw std::runtime_error ("Could not create a window.  "
@@ -52,14 +57,15 @@ imaginary::Display::GetViewPort ()
 void
 imaginary::Display::MoveViewPort (int x, int y)
 {
-
   viewPort.x = x;
   viewPort.y = y;
 }
 
-SDL_Surface*
-imaginary::Display::GetSurface ()
-  const
+void
+imaginary::Display::Flip (void)
 {
-  return surface;
+  // Switch buffers.
+  SDL_Flip (surface);
+  // Clear the backbuffer to black.
+  SDL_FillRect (surface, 0, SDL_MapRGB (surface->format, 0, 0, 0));
 }

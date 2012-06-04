@@ -41,28 +41,24 @@ namespace imaginary
  * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
  * @date    2012-06-03
  * @since   0.1
- *
- * @todo We need to make this surface available to anyone else to blit other
- * surfaces to the screen; we could use friends or pass the surfaces of other
- * images to a method of this class.  The latter looks attractive as an
- * alternative.
  */
 class Display
 {
+    friend class Image; // So Image can draw itself to the screen.
   public:
     /**
-     * Constructs a new Display object.  Because each Display doesn't currently
-     * manage the construction of the window and its display surface, this has
-     * to be passed in.
+     * Constructs a new Display object, making a window with a specified width,
+     * height, and caption.
      *
      * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
      * @date   2012-06-03
      * @since  0.1
      *
-     * @param [in] viewPort The initial view port of this display in the level.
-     * @param [in] caption  The caption for the window.
+     * @param [in] width   The width of the window.
+     * @param [in] height  The height of the window.
+     * @param [in] caption The caption for the window.
      */
-    Display (SDL_Rect viewPort, std::string caption);
+    Display (unsigned width, unsigned height, std::string caption);
     /**
      * Destructs an existing Display object.  This frees the SDL surface.
      *
@@ -97,17 +93,16 @@ class Display
      * port, relative to the level.
      */
     void MoveViewPort (int x, int y);
+
     /**
-     * Returns the surface of this Display.  Because of the way SDL works and
-     * because of our design, this is current necessary.
+     * Switches the back buffer and the front buffer and clears the new back
+     * buffer to black.
      *
      * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
      * @date   2012-06-03
      * @since  0.1
-     *
-     * @return This window's backbuffer surface.
      */
-    SDL_Surface* GetSurface () const;
+    void Flip (void);
 
   private:
     SDL_Surface* surface;  ///< This window's backbuffer surface.

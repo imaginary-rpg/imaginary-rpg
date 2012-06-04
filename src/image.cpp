@@ -95,5 +95,5 @@ imaginary::Image::Blit (SDL_Rect            part,
   destination.w = part.w;
   destination.h = part.h;
  
-  SDL_BlitSurface (surface, &part, d.GetSurface (), &destination);
+  SDL_BlitSurface (surface, &part, d.surface, &destination);
 }

@@ -16,18 +16,48 @@
  */
 
 /// @file game.hpp
-/// Contains the Game class.
+/// Contains the Game class and the Sdl class.
 
 #ifndef IMAGINARY_GAME_HPP
 #define IMAGINARY_GAME_HPP
 
+#include "display.hpp"
+
 struct SDL_Surface;
 union SDL_Event;
+
 
 namespace imaginary
 {
 
-class Display;
+/**
+ * Manages the initialization and shutdown of SDL.
+ *
+ * @version 0.1
+ * @author  Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+ * @date    2012-06-03
+ * @since   0.1
+ */
+class Sdl
+{
+  public:
+    /**
+     * Initializes SDL and related libraries (SDL_image, SDL_mixer, etc).
+     *
+     * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+     * @date   2012-06-03
+     * @since  0.1
+     */
+    Sdl ();
+    /**
+     * Cleans up SDL and related libraries (SDL_image, SDL_mixer, etc).
+     *
+     * @author Patrick M. Niedzielski <PatrickNiedzielski@gmail.com>
+     * @date   2012-06-03
+     * @since  0.1
+     */
+    ~Sdl ();
+};
 
 
 /**
@@ -113,8 +143,11 @@ class Game
      */
     void Render ();
 
-    Display* display; ///< The Display that manages the game window.
-    bool isRunning;   ///< Whether should continue running after this frame.
+    // C++ guarantees that objects in a class will be constructed in the order
+    // they are declared here.  SDL will always be initialized first.  Yay!
+    Sdl     sdl;       ///< SDL manager.
+    Display display;   ///< The Display that manages the game window.
+    bool    isRunning; ///< Whether should continue running after this frame.
 };
 
 

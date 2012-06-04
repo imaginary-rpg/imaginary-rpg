@@ -25,29 +25,31 @@
 
 #include <SDL.h>
 
-imaginary::Game::Game ()
-  : display (0),
-    isRunning (false)
-{
-  std::cout << "Initializing Imaginary...\n";
 
+imaginary::Sdl::Sdl ()
+{
   if (SDL_Init (SDL_INIT_EVERYTHING) < 0)
     {
       throw std::runtime_error ("Could not initialize SDL.");
     }
-  std::cout << "  >> Initialized SDL\n";
+  std::cout << "Initialized SDL\n";
+}
 
-  SDL_Rect viewPort = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-  display = new imaginary::Display (viewPort, "Imaginary");
-  std::cout << "  >> Created window\n";
+imaginary::Sdl::~Sdl ()
+{
+  SDL_Quit ();
+}
+
+
+imaginary::Game::Game ()
+  : sdl (),
+    display (WINDOW_WIDTH, WINDOW_HEIGHT, "Imaginary"),
+    isRunning (false)
+{
 }
 
 imaginary::Game::~Game ()
 {
-  std::cout << "Closing Imaginary...\n";
-  delete display;
-  SDL_Quit ();
-  std::cout << "  >> Shutdown SDL\n";
 }
 
 int
@@ -69,12 +71,9 @@ imaginary::Game::Run ()
         }
  
       Update ();
-      // Hack, until we make level class.
-      SDL_FillRect (display->GetSurface (), 0,
-                    SDL_MapRGB (display->GetSurface ()->format, 0, 0, 0));
       // Hack, to test
       SDL_Rect source = { 10, 14, 42, 46 };
-      im.Blit (source, *display, 128, 128);
+      im.Blit (source, display, 128, 128);
       Render ();
     }
 
@@ -105,5 +104,5 @@ imaginary::Game::Update ()
 void
 imaginary::Game::Render ()
 {
-  SDL_Flip (display->GetSurface ());
+  display.Flip ();
 }
