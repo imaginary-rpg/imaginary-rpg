@@ -14,21 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
-                ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+find_package (Doxygen)
+if (DOXYGEN_FOUND)
+  configure_file (${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
+                  ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
 
-set (imaginary_INCLUDE ${CMAKE_CURRENT_BINARY_DIR})
-file (GLOB imaginary_SRCS "*.cpp")
-
-find_package (SDL       REQUIRED)
-find_package (SDL_image REQUIRED)
-find_package (SDL_mixer REQUIRED)
-#find_package (SDL_sound REQUIRED)
-
-include_directories (${imaginary_INCLUDE}
-                     ${SDL_INCLUDE_DIR} ${SDLIMAGE_INCLUDE_DIR}
-                     ${SDLMIXER_INCLUDE_DIR})
-add_executable (imaginary ${imaginary_SRCS})
-target_link_libraries (imaginary
-                       ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} ${SDLMIXER_LIBRARY}
-                       SDLmain)
+  add_custom_target (doc
+                     ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                     COMMENT "Generating API documentation with Doxygen"
+                     VERBATIM)
+endif (DOXYGEN_FOUND)

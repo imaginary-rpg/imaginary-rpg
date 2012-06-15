@@ -25,3 +25,4 @@ include (Version)
 #include (Uninstall)
 
 add_subdirectory (src)
+add_subdirectory (doc)

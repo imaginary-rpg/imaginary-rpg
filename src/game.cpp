@@ -17,41 +17,103 @@
 
 #include "config.h"
 #include "game.hpp"
+#include "image.hpp"
+#include "display.hpp"
+#include "sound.hpp"
 
 #include <iostream>
 #include <stdexcept>
 
 #include <SDL.h>
+#include <SDL_mixer.h>
 
-imaginary::Game::Game ()
-  : displaySurface (0)
+
+imaginary::Sdl::Sdl ()
 {
-  std::cout << "Initializing Imaginary...\n";
-
   if (SDL_Init (SDL_INIT_EVERYTHING) < 0)
     {
       throw std::runtime_error ("Could not initialize SDL.");
     }
- 
-  displaySurface = SDL_SetVideoMode (640, 480, 32,
-                                     SDL_HWSURFACE | SDL_DOUBLEBUF);
-  if (!displaySurface)
+  
+  if (Mix_OpenAudio (22050, AUDIO_S16SYS, 2, 4096) != 0)
     {
-      throw std::runtime_error ("Could not create a window.  "
-                                "Is your graphics card supported?");
+      throw std::runtime_error ("Could not initialize SDL mixer.");
     }
+
+  std::cout << "Initialized SDL\n";
+}
+
+imaginary::Sdl::~Sdl ()
+{
+  Mix_CloseAudio ();
+  SDL_Quit ();
+}
+
+
+imaginary::Game::Game ()
+  : sdl (),
+    display (WINDOW_WIDTH, WINDOW_HEIGHT, "Imaginary"),
+    isRunning (false)
+{
 }
 
 imaginary::Game::~Game ()
 {
-  std::cout << "Closing Imaginary...\n";
-  SDL_Quit ();
 }
 
 int
 imaginary::Game::Run ()
 {
-  // Temporary hack.
-  std::cin.get ();
+  isRunning = true;
+  std::cout << "Starting game...\n";
+  std::cout << "  >> To quit, close the window or press enter\n";
+
+  // Hack, to test
+  imaginary::Image im ("../res/sprites/char/daedalus_walkcycle.png");
+  imaginary::Sound sn ("../res/audio/music/code_monkey.ogg");
+  sn.Play (-1);
+
+  while (isRunning)
+    {
+      SDL_Event event;
+      while (SDL_PollEvent (&event))
+        {
+          HandleEvent (&event);
+        }
+ 
+      Update ();
+      // Hack, to test
+      SDL_Rect source = { 10, 14, 42, 46 };
+      im.Blit (source, display, 128, 128);
+      Render ();
+    }
+
   return 0;
+}
+
+void
+imaginary::Game::HandleEvent (SDL_Event *event)
+{
+  switch (event->type)
+    {
+    case SDL_QUIT:
+      isRunning = false;
+      break;
+    case SDL_KEYUP:
+      if (event->key.keysym.sym == SDLK_RETURN)
+        {
+          isRunning = false;
+        }
+    }
+}
+
+void
+imaginary::Game::Update ()
+{
+}
+
+void
+imaginary::Game::Render ()
+{
+  display.Flip ();
 }

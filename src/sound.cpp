@@ -16,12 +16,31 @@
  */
 
 #include "config.h"
-#include "game.hpp"
+#include "sound.hpp"
 
-int
-main (int argc, char **argv)
+#include <string>
+#include <stdexcept>
+#include <SDL_mixer.h>
+
+imaginary::Sound::Sound (std::string fileName)
+  : chunk (Mix_LoadWAV (fileName.c_str ()))
 {
-  imaginary::Game game;
+  if (!chunk)
+    {
+      throw std::runtime_error ("Could not load sound file.");
+    }
+}
 
-  return game.Run();
+imaginary::Sound::~Sound ()
+{
+  Mix_FreeChunk (chunk);
+}
+
+void
+imaginary::Sound::Play (int times)
+{
+  if (Mix_PlayChannel (-1, chunk, times) == -1)
+    {
+      throw std::runtime_error ("Could not play sound file.");
+    }
 }

@@ -43,6 +43,8 @@ System Requirements
 Directory Structure
 ----------------------------------------------------------------------
 
+  * `build` - A folder for separating built files from source files.
+  * `cmake` - Modules for CMake.
   * `doc` - Documentation, including both Doxygen generated
     documentation and manuals.
   * `res` - Resource files.
